@@ -8,11 +8,13 @@
 
 import UIKit
 import AFNetworking
+import SVProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     var movieDictionary: [NSDictionary]?
+    var errorCode = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,20 +22,11 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         tableView.delegate = self
         
-        let apiKey = "cee559a4a6b70debdcf335be6e319ce0"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
-        let request = URLRequest(url: url!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            if let data = data {
-                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    self.movieDictionary = dataDictionary["results"] as? [NSDictionary]
-//                    print(dataDictionary)
-                    self.tableView.reloadData()
-                }
-            }
-        }
-        task.resume()
+        loadFromNetwork()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshContent(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,6 +56,66 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         return cell!
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if self.errorCode == -1009{
+            /*
+            let networkErrorLabel = UILabel()
+            networkErrorLabel.text = "Network Error! :("
+            networkErrorLabel.textAlignment = NSTextAlignment.center
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+            self.tableView.backgroundView = networkErrorLabel
+            */
+            let networkErrorImageView = UIImageView()
+            let networkErrorImage = UIImage(named: "network_error")
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+            networkErrorImageView.image = networkErrorImage
+            networkErrorImageView.alpha = 0.2
+            
+            let screenSize = UIScreen.main.bounds
+            networkErrorImageView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height*0.2)
+            self.tableView.backgroundView = networkErrorImageView
+            return 0
+        }else{
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+            return 1
+        }
+    }
+    
+    func loadFromNetwork(){
+        let apiKey = "cee559a4a6b70debdcf335be6e319ce0"
+        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let request = URLRequest(url: url!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        
+        self.errorCode = 0
+        SVProgressHUD.show()
+        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            if let err = error as? NSError{
+                SVProgressHUD.dismiss()
+                print(err.code)
+                if err.code == -1009{
+                    print("network error")
+                    self.errorCode = -1009
+                    self.tableView.reloadData()
+                }
+            }
+            else if let data = data {
+                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    self.movieDictionary = dataDictionary["results"] as? [NSDictionary]
+                    //                    print(dataDictionary)
+                    self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func refreshContent(_ refreshControl: UIRefreshControl){
+        self.loadFromNetwork()
+        refreshControl.endRefreshing()
     }
     
     /*

@@ -14,13 +14,16 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
   - AFNetworking
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: 6f17edcf5d17defff1a10576b4adffa8ae5a6f31
+PODFILE CHECKSUM: 2494810bf8d1681d73e0526471ffc8a95db6152f
 
 COCOAPODS: 1.2.0
