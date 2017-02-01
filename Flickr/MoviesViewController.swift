@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -53,6 +54,11 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let movie = movieDictionary?[indexPath.row]{
             cell?.titleLabel.text = movie["original_title"] as? String
             cell?.overviewLabel.text = movie["overview"] as? String
+            
+            let baseURL = "https://image.tmdb.org/t/p/w500"
+            let filePath = movie["poster_path"] as? String
+            let posterURL = URL(string: baseURL+filePath!)
+            cell?.posterImageView.setImageWith(posterURL!)
 //            cell.textLabel?.text = movie["original_title"] as? String
         }
         
