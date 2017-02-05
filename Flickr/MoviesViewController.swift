@@ -16,8 +16,10 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
+    
     var movieDictionary: [NSDictionary]?
     var errorCode = 0
+    let button = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         
+        
+        button.frame = CGRect(x: 0, y: 0, width: 35, height: 25)
+        button.setImage(UIImage(named:"listView.png"), for: UIControlState.normal)
+        button.addTarget(self, action: #selector(switchView(_:)), for: UIControlEvents.touchDown)
+        let barButton = UIBarButtonItem()
+        barButton.customView = button
+        self.navigationItem.leftBarButtonItem = barButton
+        
         self.collectionViewFlowLayout.scrollDirection = .vertical
         self.collectionViewFlowLayout.minimumInteritemSpacing = 2
         self.collectionViewFlowLayout.minimumLineSpacing = 2
@@ -36,7 +46,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         loadFromNetwork()
         
         self.tableView.isHidden = true
-//        self.collectionView.isHidden = true
+        self.collectionView.alpha = 1
+        self.collectionView.isHidden = false
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshContent(_:)), for: UIControlEvents.valueChanged)
@@ -65,11 +76,29 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let baseURL = "https://image.tmdb.org/t/p/w500"
             let filePath = movie["poster_path"] as? String
             let posterURL = URL(string: baseURL+filePath!)
-            cell?.posterImageView.setImageWith(posterURL!)
+            self.fadeInImageAtView(url: posterURL!, posterImageView: (cell?.posterImageView)!)
+//            cell?.posterImageView.setImageWith(posterURL!)
 //            cell.textLabel?.text = movie["original_title"] as? String
         }
         
         return cell!
+    }
+    
+    func fadeInImageAtView(url: URL, posterImageView: UIImageView) -> Void{
+        let imageRequest = URLRequest(url: url)
+        posterImageView.setImageWith(imageRequest, placeholderImage: nil, success: { (imageRequest, response, image) in
+            if response != nil{
+                posterImageView.alpha = 0
+                posterImageView.image = image
+                UIView.animate(withDuration: 0.3, animations: {
+                    posterImageView.alpha = 1
+                })
+            }else{
+                posterImageView.image = image
+            }
+        }) { (imageRequest, response, error) in
+            print(error)
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -112,7 +141,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let baseURL = "https://image.tmdb.org/t/p/w500"
             let filePath = movie["poster_path"] as? String
             let posterURL = URL(string: baseURL+filePath!)
-            cell.posterImageView.setImageWith(posterURL!)
+//            cell.posterImageView.setImageWith(posterURL!)
+            self.fadeInImageAtView(url: posterURL!, posterImageView: cell.posterImageView)
         }
             
         return cell
@@ -174,17 +204,19 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         refreshControl.endRefreshing()
     }
     
-    @IBAction func switchView(_ sender: Any) {
+    func switchView(_ sender: Any) {
         if self.tableView.isHidden {
             self.tableView.isHidden = false
             self.tableView.alpha = 1
             self.collectionView.isHidden = true
             self.tableView.reloadData()
+            button.setImage(UIImage(named:"gridView.png"), for: UIControlState.normal)
         }else{
             self.tableView.isHidden = true
             self.collectionView.alpha = 1
             self.collectionView.isHidden = false
             self.collectionView.reloadData()
+            button.setImage(UIImage(named:"listView.png"), for: UIControlState.normal)
         }
     }
     /*
