@@ -20,6 +20,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var movieDictionary: [NSDictionary]?
     var errorCode = 0
     let button = UIButton()
+    let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,12 +47,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         loadFromNetwork()
         
         self.tableView.isHidden = true
+        self.tableView.alpha = 0
         self.collectionView.alpha = 1
         self.collectionView.isHidden = false
         
-        let refreshControl = UIRefreshControl()
+        
         refreshControl.addTarget(self, action: #selector(refreshContent(_:)), for: UIControlEvents.valueChanged)
-        tableView.insertSubview(refreshControl, at: 0)
+        collectionView.insertSubview(refreshControl, at: 0)
     }
 
     override func didReceiveMemoryWarning() {
@@ -77,8 +79,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let filePath = movie["poster_path"] as? String
             let posterURL = URL(string: baseURL+filePath!)
             self.fadeInImageAtView(url: posterURL!, posterImageView: (cell?.posterImageView)!)
-//            cell?.posterImageView.setImageWith(posterURL!)
-//            cell.textLabel?.text = movie["original_title"] as? String
+
         }
         
         return cell!
@@ -103,25 +104,24 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if self.errorCode == -1009{
-            /*
-            let networkErrorLabel = UILabel()
-            networkErrorLabel.text = "Network Error! :("
-            networkErrorLabel.textAlignment = NSTextAlignment.center
-            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
-            self.tableView.backgroundView = networkErrorLabel
-            */
+            
             let networkErrorImageView = UIImageView()
             let networkErrorImage = UIImage(named: "network_error")
             self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
             networkErrorImageView.image = networkErrorImage
-            networkErrorImageView.alpha = 0.2
+            networkErrorImageView.contentMode = UIViewContentMode.scaleAspectFill
             
-            let screenSize = UIScreen.main.bounds
-            networkErrorImageView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height*0.2)
             self.tableView.backgroundView = networkErrorImageView
+            self.tableView.backgroundView?.alpha = 0.2
+            
+            let networkErrorTapGesture = UITapGestureRecognizer()
+            networkErrorTapGesture.addTarget(self, action: #selector(loadFromNetwork))
+            self.tableView.backgroundView?.isUserInteractionEnabled = true
+            self.tableView.backgroundView?.addGestureRecognizer(networkErrorTapGesture)
             return 0
         }else{
             self.tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
+            self.tableView.backgroundView?.alpha = 0
             return 1
         }
     }
@@ -153,6 +153,28 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let totalHeight = self.collectionView.bounds.size.height
         
         return CGSize(width: totalWidth/2-2, height: totalHeight/3-2)
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if self.errorCode == -1009{
+            let networkErrorImageView = UIImageView()
+            let networkErrorImage = UIImage(named: "network_error")
+            networkErrorImageView.image = networkErrorImage
+            networkErrorImageView.contentMode = UIViewContentMode.scaleAspectFill
+            
+            self.collectionView.backgroundView = networkErrorImageView
+            self.collectionView.backgroundView?.alpha = 0.2
+            
+            let networkErrorTapGesture = UITapGestureRecognizer()
+            networkErrorTapGesture.addTarget(self, action: #selector(loadFromNetwork))
+            self.collectionView.backgroundView?.isUserInteractionEnabled = true
+            self.collectionView.backgroundView?.addGestureRecognizer(networkErrorTapGesture)
+            
+            return 0
+        }else{
+            self.collectionView.backgroundView?.alpha = 0
+            return 1
+        }
     }
     
     func loadFromNetwork(){
@@ -209,14 +231,18 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.tableView.isHidden = false
             self.tableView.alpha = 1
             self.collectionView.isHidden = true
+            self.collectionView.alpha = 0
             self.tableView.reloadData()
             button.setImage(UIImage(named:"gridView.png"), for: UIControlState.normal)
+            tableView.insertSubview(refreshControl, at: 0)
         }else{
             self.tableView.isHidden = true
+            self.tableView.alpha = 0
             self.collectionView.alpha = 1
             self.collectionView.isHidden = false
             self.collectionView.reloadData()
             button.setImage(UIImage(named:"listView.png"), for: UIControlState.normal)
+            collectionView.insertSubview(refreshControl, at: 0)
         }
     }
     /*
