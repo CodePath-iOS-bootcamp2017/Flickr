@@ -10,19 +10,33 @@ import UIKit
 import AFNetworking
 import SVProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+    
     var movieDictionary: [NSDictionary]?
     var errorCode = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.dataSource = self
-        tableView.delegate = self
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        
+        self.collectionViewFlowLayout.scrollDirection = .vertical
+        self.collectionViewFlowLayout.minimumInteritemSpacing = 2
+        self.collectionViewFlowLayout.minimumLineSpacing = 2
+        self.collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         
         loadFromNetwork()
+        
+        self.tableView.isHidden = true
+//        self.collectionView.isHidden = true
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshContent(_:)), for: UIControlEvents.valueChanged)
@@ -83,6 +97,34 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let movieCount = movieDictionary?.count{
+            return movieCount
+        }else{
+            return 0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as! MovieCollectionViewCell
+            
+        if let movie = movieDictionary?[indexPath.row]{
+            let baseURL = "https://image.tmdb.org/t/p/w500"
+            let filePath = movie["poster_path"] as? String
+            let posterURL = URL(string: baseURL+filePath!)
+            cell.posterImageView.setImageWith(posterURL!)
+        }
+            
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let totalWidth = self.collectionView.bounds.size.width
+        let totalHeight = self.collectionView.bounds.size.height
+        
+        return CGSize(width: totalWidth/2-2, height: totalHeight/3-2)
+    }
+    
     func loadFromNetwork(){
         let apiKey = "cee559a4a6b70debdcf335be6e319ce0"
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -93,20 +135,34 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         SVProgressHUD.show()
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let err = error as? NSError{
+                
                 SVProgressHUD.dismiss()
                 print(err.code)
+                
                 if err.code == -1009{
                     print("network error")
                     self.errorCode = -1009
-                    self.tableView.reloadData()
+                    
+                    if self.tableView.isHidden {
+                        self.collectionView.reloadData()
+                    }else{
+                        self.tableView.reloadData()
+                    }
                 }
             }
             else if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    
+                    SVProgressHUD.dismiss()
+                    
                     self.movieDictionary = dataDictionary["results"] as? [NSDictionary]
                     //                    print(dataDictionary)
-                    self.tableView.reloadData()
-                    SVProgressHUD.dismiss()
+                    if self.tableView.isHidden {
+                        self.collectionView.reloadData()
+                    }else{
+                        self.tableView.reloadData()
+                    }
+                    
                 }
             }
         }
@@ -118,6 +174,19 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         refreshControl.endRefreshing()
     }
     
+    @IBAction func switchView(_ sender: Any) {
+        if self.tableView.isHidden {
+            self.tableView.isHidden = false
+            self.tableView.alpha = 1
+            self.collectionView.isHidden = true
+            self.tableView.reloadData()
+        }else{
+            self.tableView.isHidden = true
+            self.collectionView.alpha = 1
+            self.collectionView.isHidden = false
+            self.collectionView.reloadData()
+        }
+    }
     /*
     // MARK: - Navigation
 

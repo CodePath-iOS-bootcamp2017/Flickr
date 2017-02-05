@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES" initialViewController="yQB-FX-2Rg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="yQB-FX-2Rg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,34 +13,37 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MoviesViewController" customModule="Flickr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zvv-t6-3YF"/>
+                        <viewControllerLayoutGuide type="bottom" id="nKu-Bo-AjT"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="114" sectionHeaderHeight="28" sectionFooterHeight="28" id="I7J-yI-VSV">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="114" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I7J-yI-VSV">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="114" id="NcT-pp-jON" customClass="MovieTableViewCell" customModule="Flickr" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="114" id="NcT-pp-jON" customClass="MovieTableViewCell" customModule="Flickr" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="114"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NcT-pp-jON" id="j8V-Ws-Uvg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="113.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wPO-Uf-MfM">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wPO-Uf-MfM">
                                                     <rect key="frame" x="109" y="56" width="248" height="49"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" id="mJN-1L-m2i">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mJN-1L-m2i">
                                                     <rect key="frame" x="8" y="8" width="93" height="97"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A1F-xC-fuf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1F-xC-fuf">
                                                     <rect key="frame" x="109" y="17" width="258" height="24"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -57,11 +60,63 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Txh-vk-0qi">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="IDa-on-Cwo">
+                                    <size key="itemSize" width="169" height="151"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MovieCollectionViewCell" id="Svf-vC-X0k" customClass="MovieCollectionViewCell" customModule="Flickr" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="169" height="151"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="169" height="151"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="J32-wM-hxt">
+                                                    <rect key="frame" x="0.0" y="0.0" width="169" height="151"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="J32-wM-hxt" firstAttribute="leading" secondItem="Svf-vC-X0k" secondAttribute="leading" id="rM1-xw-htd"/>
+                                            <constraint firstItem="J32-wM-hxt" firstAttribute="width" secondItem="Svf-vC-X0k" secondAttribute="width" id="rh4-XT-plI"/>
+                                            <constraint firstItem="J32-wM-hxt" firstAttribute="height" secondItem="Svf-vC-X0k" secondAttribute="height" id="sJe-Ec-Qtt"/>
+                                            <constraint firstItem="J32-wM-hxt" firstAttribute="top" secondItem="Svf-vC-X0k" secondAttribute="top" id="zS7-ux-sep"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="posterImageView" destination="J32-wM-hxt" id="F2j-KM-nc1"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="I7J-yI-VSV" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="4hB-ba-SWh"/>
+                            <constraint firstItem="I7J-yI-VSV" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="5Ak-du-P2x"/>
+                            <constraint firstItem="Txh-vk-0qi" firstAttribute="top" secondItem="Zvv-t6-3YF" secondAttribute="bottom" id="KeC-vC-dUj"/>
+                            <constraint firstItem="Txh-vk-0qi" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Txg-Mf-1r7"/>
+                            <constraint firstItem="I7J-yI-VSV" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="YGO-sf-EzG"/>
+                            <constraint firstItem="Txh-vk-0qi" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="oC0-QY-yke"/>
+                            <constraint firstItem="Txh-vk-0qi" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="vpy-br-tuT"/>
+                            <constraint firstItem="I7J-yI-VSV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="w59-s8-Jb6"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Flickrs" id="Dx5-2p-F9K"/>
+                    <navigationItem key="navigationItem" title="Flickrs" id="Dx5-2p-F9K">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="H98-VX-Tze">
+                            <connections>
+                                <action selector="switchView:" destination="BYZ-38-t0r" id="8rh-F0-NKX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="collectionView" destination="Txh-vk-0qi" id="BQ4-t4-d5p"/>
+                        <outlet property="collectionViewFlowLayout" destination="IDa-on-Cwo" id="ufT-nT-Lul"/>
                         <outlet property="tableView" destination="I7J-yI-VSV" id="Af4-Lu-c4a"/>
                     </connections>
                 </viewController>
