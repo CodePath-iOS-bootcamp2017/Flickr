@@ -112,6 +112,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    
     // overriding methods for collection view
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let movieCount = filteredMovies?.count{
