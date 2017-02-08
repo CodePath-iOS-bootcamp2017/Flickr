@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2466D8951E4AAEBB00F98A91 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2466D8941E4AAEBB00F98A91 /* DetailsViewController.swift */; };
 		24C9B2761E415DDF00D87F41 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C9B2751E415DDF00D87F41 /* AppDelegate.swift */; };
 		24C9B27B1E415DDF00D87F41 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24C9B2791E415DDF00D87F41 /* Main.storyboard */; };
 		24C9B27E1E415DDF00D87F41 /* Flickr.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 24C9B27C1E415DDF00D87F41 /* Flickr.xcdatamodeld */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2466D8941E4AAEBB00F98A91 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		24C9B2721E415DDF00D87F41 /* Flickr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flickr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24C9B2751E415DDF00D87F41 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24C9B27A1E415DDF00D87F41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				24C9B28A1E4166D900D87F41 /* MoviesViewController.swift */,
+				2466D8941E4AAEBB00F98A91 /* DetailsViewController.swift */,
 			);
 			name = view_controllers;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				24E982CA1E46C95C00D861D2 /* MovieCollectionViewCell.swift in Sources */,
 				24C9B28D1E417DD700D87F41 /* MovieTableViewCell.swift in Sources */,
 				24C9B28B1E4166D900D87F41 /* MoviesViewController.swift in Sources */,
+				2466D8951E4AAEBB00F98A91 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

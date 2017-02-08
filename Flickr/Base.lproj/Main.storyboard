@@ -25,11 +25,11 @@
                                 <rect key="frame" x="0.0" y="50" width="375" height="617"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="112" id="NcT-pp-jON" customClass="MovieTableViewCell" customModule="Flickr" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="112" id="NcT-pp-jON" customClass="MovieTableViewCell" customModule="Flickr" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="112"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NcT-pp-jON" id="j8V-Ws-Uvg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="111.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="111"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mJN-1L-m2i">
@@ -67,6 +67,7 @@
                                             <outlet property="overviewLabel" destination="wPO-Uf-MfM" id="Z3k-aC-qc3"/>
                                             <outlet property="posterImageView" destination="mJN-1L-m2i" id="8KX-Za-W3N"/>
                                             <outlet property="titleLabel" destination="A1F-xC-fuf" id="rlo-gJ-2Rz"/>
+                                            <segue destination="eoi-2p-lKq" kind="push" id="vuk-w0-FlC"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -101,6 +102,7 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="posterImageView" destination="J32-wM-hxt" id="F2j-KM-nc1"/>
+                                            <segue destination="eoi-2p-lKq" kind="push" id="YD6-WB-Rkq"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -137,6 +139,65 @@
             </objects>
             <point key="canvasLocation" x="660.5" y="137.5"/>
         </scene>
+        <!--Details View Controller-->
+        <scene sceneID="lau-gB-Esc">
+            <objects>
+                <viewController id="eoi-2p-lKq" customClass="DetailsViewController" customModule="Flickr" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="553-Ld-9w8"/>
+                        <viewControllerLayoutGuide type="bottom" id="bqX-r2-4TN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OTF-o3-dwC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c15-M8-qwz">
+                                <rect key="frame" x="1" y="64" width="373" height="603"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FVi-hd-GI7">
+                                        <rect key="frame" x="0.0" y="-130" width="373" height="669"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <view alpha="0.80000000000000004" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hLB-Vg-qg2">
+                                        <rect key="frame" x="0.0" y="669" width="373" height="280"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPX-fM-X91">
+                                                <rect key="frame" x="25" y="21" width="328" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xjp-R6-AiT">
+                                                <rect key="frame" x="25" y="66" width="328" height="34"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="YDi-UG-J7q"/>
+                    <connections>
+                        <outlet property="detailsScrollView" destination="c15-M8-qwz" id="TDi-if-qr0"/>
+                        <outlet property="infoView" destination="hLB-Vg-qg2" id="Qf6-xa-5A8"/>
+                        <outlet property="overviewLabel" destination="Xjp-R6-AiT" id="REi-JP-Ee9"/>
+                        <outlet property="posterImageView" destination="FVi-hd-GI7" id="I9t-Vv-q2g"/>
+                        <outlet property="titleLabel" destination="nPX-fM-X91" id="Lov-fF-WqX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eyr-AB-Z2E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1206.5" y="137.5"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ctm-QU-ETJ">
             <objects>
@@ -161,4 +222,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="vuk-w0-FlC"/>
+    </inferredMetricsTieBreakers>
 </document>

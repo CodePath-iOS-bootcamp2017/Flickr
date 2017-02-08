@@ -79,10 +79,11 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell?.overviewLabel.text = movie["overview"] as? String
             
             let baseURL = "https://image.tmdb.org/t/p/w500"
-            let filePath = movie["poster_path"] as? String
-            let posterURL = URL(string: baseURL+filePath!)
-            self.fadeInImageAtView(url: posterURL!, posterImageView: (cell?.posterImageView)!)
-
+            if let filePath = movie["poster_path"] as? String{
+                let posterURL = URL(string: baseURL+filePath)
+                self.fadeInImageAtView(url: posterURL!, posterImageView: (cell?.posterImageView)!)
+            }
+            
         }
         
         return cell!
@@ -273,14 +274,28 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             collectionView.insertSubview(refreshControl, at: 0)
         }
     }
-    /*
+    
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if let tableCell = sender as? MovieTableViewCell{
+            let tableIndex = tableView.indexPath(for: tableCell)
+            let movie = self.movieDictionary?[(tableIndex?.row)!]
+            
+            if let detailsViewController = segue.destination as? DetailsViewController{
+                detailsViewController.movie = movie
+            }
+            
+        }else if let collectionCell = sender as? MovieCollectionViewCell {
+            let collectionIndex = self.collectionView.indexPath(for: collectionCell)
+            let movie = self.movieDictionary?[(collectionIndex?.row)!]
+            
+            if let detailsViewController = segue.destination as? DetailsViewController{
+                detailsViewController.movie = movie
+            }
+        }
     }
-    */
-
 }
