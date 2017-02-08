@@ -22,6 +22,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var errorCode = 0
     let button = UIButton()
     let refreshControl = UIRefreshControl()
+    var endpoint:String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -188,7 +189,9 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func loadFromNetwork(){
         let apiKey = "cee559a4a6b70debdcf335be6e319ce0"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let urlString = "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)"
+        print(urlString)
+        let url = URL(string: urlString)
         let request = URLRequest(url: url!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         

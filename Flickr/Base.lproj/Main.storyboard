@@ -201,7 +201,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ctm-QU-ETJ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yQB-FX-2Rg" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MoviesNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="yQB-FX-2Rg" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="EyT-je-KMo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
