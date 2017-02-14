@@ -17,6 +17,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    let apiKey = "cee559a4a6b70debdcf335be6e319ce0"
     var movieDictionary: [NSDictionary]?
     var filteredMovies: [NSDictionary]?
     var errorCode = 0
@@ -57,6 +58,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         refreshControl.addTarget(self, action: #selector(refreshContent(_:)), for: UIControlEvents.valueChanged)
         collectionView.insertSubview(refreshControl, at: 0)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,7 +89,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             
         }
-        
+        cell?.selectionStyle = .none
         return cell!
     }
     
@@ -134,7 +137,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //            cell.posterImageView.setImageWith(posterURL!)
             self.fadeInImageAtView(url: posterURL!, posterImageView: cell.posterImageView)
         }
-            
+
         return cell
     }
     
@@ -142,7 +145,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let totalWidth = self.collectionView.bounds.size.width
         let totalHeight = self.collectionView.bounds.size.height
         
-        return CGSize(width: totalWidth/2-2, height: totalHeight/3-2)
+        return CGSize(width: totalWidth/2-2, height: totalHeight/2-2)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -188,7 +191,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     func loadFromNetwork(){
-        let apiKey = "cee559a4a6b70debdcf335be6e319ce0"
+        
         let urlString = "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)"
         print(urlString)
         let url = URL(string: urlString)
@@ -291,6 +294,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if let detailsViewController = segue.destination as? DetailsViewController{
                 detailsViewController.movie = movie
             }
+            
+            
             
         }else if let collectionCell = sender as? MovieCollectionViewCell {
             let collectionIndex = self.collectionView.indexPath(for: collectionCell)
