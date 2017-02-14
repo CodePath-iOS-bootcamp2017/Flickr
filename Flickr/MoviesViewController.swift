@@ -411,7 +411,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Pass the selected object to the new view controller.
         if let tableCell = sender as? MovieTableViewCell{
             let tableIndex = tableView.indexPath(for: tableCell)
-            let movie = self.movieDictionary?[(tableIndex?.row)!]
+            let movie = self.filteredMovies?[(tableIndex?.row)!]
             
             if let detailsViewController = segue.destination as? DetailsViewController{
                 detailsViewController.movie = movie
@@ -421,7 +421,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         }else if let collectionCell = sender as? MovieCollectionViewCell {
             let collectionIndex = self.collectionView.indexPath(for: collectionCell)
-            let movie = self.movieDictionary?[(collectionIndex?.row)!]
+            let movie = self.filteredMovies?[(collectionIndex?.row)!]
             
             if let detailsViewController = segue.destination as? DetailsViewController{
                 detailsViewController.movie = movie
