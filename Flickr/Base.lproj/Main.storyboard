@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Flickrs-->
+        <!--Flickr-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MoviesViewController" customModule="Flickr" customModuleProvider="target" sceneMemberID="viewController">
@@ -127,7 +127,7 @@
                             <constraint firstItem="I7J-yI-VSV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="xJZ-Nj-0B4"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Flickrs" id="Dx5-2p-F9K"/>
+                    <navigationItem key="navigationItem" title="Flickr" id="Dx5-2p-F9K"/>
                     <connections>
                         <outlet property="collectionView" destination="Txh-vk-0qi" id="BQ4-t4-d5p"/>
                         <outlet property="collectionViewFlowLayout" destination="IDa-on-Cwo" id="ufT-nT-Lul"/>
@@ -154,7 +154,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FVi-hd-GI7">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c15-M8-qwz">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c15-M8-qwz">
                                 <rect key="frame" x="1" y="64" width="373" height="616"/>
                                 <subviews>
                                     <view alpha="0.80000000000000004" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hLB-Vg-qg2">

@@ -35,6 +35,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.collectionView.dataSource = self
         
         self.searchBar.delegate = self
+        self.loadNavigationBar()
         
         button.frame = CGRect(x: 0, y: 0, width: 35, height: 25)
         button.setImage(UIImage(named:"listView.png"), for: UIControlState.normal)
@@ -42,6 +43,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let barButton = UIBarButtonItem()
         barButton.customView = button
         self.navigationItem.leftBarButtonItem = barButton
+        self.loadNavigationBar()
         
         self.collectionViewFlowLayout.scrollDirection = .vertical
         self.collectionViewFlowLayout.minimumInteritemSpacing = 2
@@ -61,6 +63,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -73,6 +76,26 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return movieCount
         }else{
             return 0
+        }
+    }
+    
+    func loadNavigationBar(){
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.setBackgroundImage(UIImage(named: "Flickr_logo"), for: .default)
+            navigationBar.tintColor = UIColor(red: 1.0, green: 0.25, blue: 0.25, alpha: 0.8)
+            
+            let shadow = NSShadow()
+            shadow.shadowColor = UIColor.gray.withAlphaComponent(0.5)
+            shadow.shadowOffset = CGSize(width: 2, height: 2)
+            shadow.shadowBlurRadius = 4;
+            navigationBar.titleTextAttributes = [
+                NSFontAttributeName : UIFont.boldSystemFont(ofSize: 22),
+                NSForegroundColorAttributeName : UIColor(red: 0.5, green: 0.15, blue: 0.15, alpha: 0.8),
+                NSShadowAttributeName : shadow
+            ]
+            
+        }else{
+            print("navigationBar not found")
         }
     }
 
@@ -89,8 +112,11 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             
         }
-        cell?.selectionStyle = .none
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
