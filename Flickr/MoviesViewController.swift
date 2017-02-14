@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 import SVProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate{
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UIScrollViewDelegate{
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -24,6 +24,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let button = UIButton()
     let refreshControl = UIRefreshControl()
     var endpoint:String!
+    var loadingMoreProgressIndicator: InfiniteScrollActivityView?
+    var isMoreDataLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,20 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.searchBar.delegate = self
         self.loadNavigationBar()
+        
+        let progressIndicatorFrameTableView = CGRect(x: 0, y: self.tableView.contentSize.height, width: self.tableView.bounds.width, height: InfiniteScrollActivityView.defaultHeight)
+        self.loadingMoreProgressIndicator = InfiniteScrollActivityView(frame: progressIndicatorFrameTableView)
+        loadingMoreProgressIndicator?.isHidden = true
+        self.tableView.addSubview(loadingMoreProgressIndicator!)
+        self.collectionView.addSubview(loadingMoreProgressIndicator!)
+        
+        var insetTableView = self.tableView.contentInset
+        insetTableView.bottom += (loadingMoreProgressIndicator?.bounds.height)!
+        self.tableView.contentInset = insetTableView
+        
+        var insetCollectionView = self.collectionView.contentInset
+        insetCollectionView.bottom += (loadingMoreProgressIndicator?.bounds.height)!
+        self.collectionView.contentInset = insetCollectionView
         
         button.frame = CGRect(x: 0, y: 0, width: 35, height: 25)
         button.setImage(UIImage(named:"listView.png"), for: UIControlState.normal)
@@ -158,10 +174,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         if let movie = filteredMovies?[indexPath.row]{
             let baseURL = "https://image.tmdb.org/t/p/w500"
-            let filePath = movie["poster_path"] as? String
-            let posterURL = URL(string: baseURL+filePath!)
-//            cell.posterImageView.setImageWith(posterURL!)
-            self.fadeInImageAtView(url: posterURL!, posterImageView: cell.posterImageView)
+            if let filePath = movie["poster_path"] as? String{
+                let posterURL = URL(string: baseURL+filePath)
+                //            cell.posterImageView.setImageWith(posterURL!)
+                self.fadeInImageAtView(url: posterURL!, posterImageView: cell.posterImageView)
+            }
+            
         }
 
         return cell
@@ -262,6 +280,47 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         task.resume()
     }
     
+    func loadMoreData(){
+        let parameterString = "page=\((self.movieDictionary?.count)!/20 + 1)"
+        let baseURLString = "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)"
+        let urlString = "\(baseURLString)&\(parameterString)"
+        print(urlString)
+        if let url = URL(string:urlString){
+            let request = URLRequest(url: url)
+            let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
+            let task: URLSessionDataTask = session.dataTask(with: request, completionHandler: { (data, response, error) in
+                if let data = data{
+                    if let responseDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary{
+                        if let additionalPosts = responseDictionary.value(forKeyPath: "results") as? [NSDictionary]{
+//                            print(additionalPosts)
+                            self.movieDictionary?.append(contentsOf: additionalPosts)
+                            self.filteredMovies = self.movieDictionary
+                            self.loadingMoreProgressIndicator?.stopAnimating()
+                            
+                            if(self.collectionView.isHidden){
+                                self.tableView.reloadData()
+                                print("reloading tableview data")
+                            }
+                            else{
+                                self.collectionView.reloadData()
+                            }
+                            
+                            self.isMoreDataLoading = false
+                        }
+                    }else{
+                        print("json serialization error")
+                    }
+                }else{
+                    print("data is nil")
+                }
+            })
+            task.resume()
+        }else{
+            print("url is nil")
+        }
+        
+    }
+    
     //animation for fading in posters
     func fadeInImageAtView(url: URL, posterImageView: UIImageView) -> Void{
         let imageRequest = URLRequest(url: url)
@@ -307,6 +366,43 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    // overriding scrollViewDelegate methods
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if(!isMoreDataLoading){
+            if(self.collectionView.isHidden){
+                let scrollViewHeight = self.tableView.contentSize.height
+                let tableViewHeight = self.tableView.bounds.height
+                
+                let loadMoreThresholdPosition = scrollViewHeight - tableViewHeight
+                
+                if(scrollView.contentOffset.y > loadMoreThresholdPosition && scrollView.isDragging){
+                    self.isMoreDataLoading = true
+                    
+                    let frame = CGRect(x: 0, y: self.tableView.contentSize.height, width: self.tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                    self.loadingMoreProgressIndicator?.frame = frame
+                    self.loadingMoreProgressIndicator!.startAnimating()
+                    
+                    loadMoreData()
+                }
+            }else{
+                let scrollViewHeight = self.collectionView.contentSize.height
+                let collectionViewHeight = self.collectionView.bounds.height
+                
+                let loadMoreThresholdPosition = scrollViewHeight - collectionViewHeight
+                
+                if(scrollView.contentOffset.y > loadMoreThresholdPosition && scrollView.isDragging){
+                    self.isMoreDataLoading = true
+                    
+                    let frame = CGRect(x: 0, y: self.collectionView.contentSize.height, width: self.collectionView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                    self.loadingMoreProgressIndicator?.frame = frame
+                    self.loadingMoreProgressIndicator!.startAnimating()
+                    
+                    loadMoreData()
+                }
+            }
+            
+        }
+    }
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
